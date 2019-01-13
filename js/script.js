@@ -4,5 +4,6 @@ firebase.initializeApp(Config.firebase);
 window.onload = function() {   
     Session.init();//login
     Game.init();
+    //Game.init1();
 };
 

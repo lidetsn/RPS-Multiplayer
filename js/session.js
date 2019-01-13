@@ -4,21 +4,18 @@
 var Session = (function() {   
     var loggedIn = false;
 
-    
     function authStateChangeListener(user) {
         console.log("Auth state change: ", user);
 
         //signin
         if (user) {
-            console.log("I am now logged in as"+ user.displayName);
+            console.log("I am now logged in as ---"+ user.displayName);
             loggedIn = true;
             closeLoginDialog();
             
             document.querySelector("#login-form").style.display = "none";
-            document.querySelector("#logout").style.display = "block";
-
-           
-            Game.onlogin();
+            document.querySelector("#logout").style.display = "block";         
+            Game.onLogin();
         } else { //signout
             if (loggedIn) {
                 loggedIn = false;
@@ -41,6 +38,10 @@ var Session = (function() {
                 $("#create-game-container").show();
                 $("#login-form").hide();
                 $("#logout-container").show()
+                //-----------------------------------------------------
+                
+           
+                //-----------------------------
             }, function(error) {
                 console.log("Sign in error: ", error);
             })
@@ -71,7 +72,7 @@ var Session = (function() {
                 
                 user.updateProfile({displayName: displayName.value});
                 $("#create-account-container").hide();
-               $("#create-game-container").show();
+                $("#create-game-container").show();
                 $("#logout-container").show()
                
             }, function(error) {
@@ -89,14 +90,17 @@ var Session = (function() {
         init: function() {
            
 
-            firebase.auth().onAuthStateChanged(authStateChangeListener);          
-            document.querySelector("#logOut").addEventListener("click", function() {
+            firebase.auth().onAuthStateChanged(authStateChangeListener);  
+                 
+           // document.querySelector("#logOut").addEventListener("click", function() {
+         $(document).on("click","#logOut",function(){
           firebase.auth().signOut().then(function() {
                console.log('Signed Out');
              }, function(error) {
             console.error('Sign Out Error', error);
                });
              });
+          
             $(document).on("click","#sign-in",signInWithEmailandPassword)
           
             $(document).on("click","#entry-submit",submitCreateAccount)
